@@ -44,6 +44,8 @@ const typed = new Typed('.multiple-text', {
     loop: true
 });
 
+/* This initializes the Typed.js library to create a typing animation effect on the profession text in the home section */
+
 // Scroll Reveal Animation
 ScrollReveal({
     reset: true,
