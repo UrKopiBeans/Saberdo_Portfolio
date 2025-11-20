@@ -1,4 +1,4 @@
-     /* Import Google Fonts: Loads the Poppins font family for consistent typography */
+/* Import Google Fonts: Loads the Poppins font family for consistent typography */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
 /* Reset and Base Styles: Resets default margins and padding, sets box-sizing and font family */
@@ -708,9 +708,13 @@ section {
     }
 
     .portfolio-box img {
-        height: 200px;
+    .portfolio-box img {
     }
 }
+
+/* Animation Classes */
+        height: 200px;
+    }
 
 /* Animation Classes */
 .animate-on-scroll {
@@ -718,6 +722,7 @@ section {
     transform: translateY(50px);
     transition: all 0.6s ease;
 }
+
 
 .animate-on-scroll.animate {
     opacity: 1;
