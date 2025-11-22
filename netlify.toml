@@ -1,10 +1,9 @@
 from = "/*"
-  to = "/index.html"
+  to = "/Portfolio.html"
   status = 200
 
   [[redirects]]
     from = "/*"
     publish = "."
-    to = "/index.html"
+    to = "/Portfolio.html"
     status = 200
-    
