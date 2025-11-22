@@ -1,0 +1,10 @@
+from = "/*"
+  to = "/index.html"
+  status = 200
+
+  [[redirects]]
+    from = "/*"
+    publish = "."
+    to = "/index.html"
+    status = 200
+    

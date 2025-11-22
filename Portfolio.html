@@ -5,6 +5,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width,initial-scale=1.0">
         <title>Saberdo | Portfolio</title>
+        <link rel="icon" href="Image/png1.png" type="image/png">
         <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
         <link rel="stylesheet" type="text/css" href="Portfolio.Css">
     </head>
@@ -70,12 +71,12 @@ I may still be building my experience, but I’m passionate about improving my s
 
                 <div class="services-box">
                     <i class='bx bx-brush' ></i>
-                    <h3>Branding & Identity</h3>
-                    <p>Developing comprehensive brand identities including color schemes, typography, and visual elements that create a cohesive and professional image for your business.</p>
+                    <h3>Branding</h3>
+                    <p>Developing comprehensive branding strategies that include visual identity, brand guidelines, and cohesive design elements to build a strong brand presence.</p>
                 </div>
-
             </div>
         </section>
+        <!-- Portfolio Section: Showcase of projects -->
         <section class="portfolio"id="portfolio">
             <h2 class="heading">Latest<span>Project</span></h2>
             <div class="portfolio-container">
@@ -203,6 +204,16 @@ I may still be building my experience, but I’m passionate about improving my s
 
             <h3>I'm always interested in hearing about new projects and opportunities.</h3>
             <h3>Whether you have a question or just want to say hi, feel free to reach out!</h3>
+            <form name="submit-to-google-sheet">
+                <div class="input-box">
+                    <input type="text" name="Name" placeholder="Full Name" required>
+                    <input type="email" name="Email Address" placeholder="Email Address" required>
+                </div>
+                <textarea name="Your Message" cols="30" rows="5" placeholder="Your Message" required></textarea>
+                <button type="submit" class="btn">Send Message <i class='bx bx-send'></i></button>
+            </form>
+            <div id="msg"></div>
+            <h3 class="animate-on-scroll">Socials</h3>
             <div class="social-media-container">
                 <div class="social-media">
                     <a href="https://github.com/UrKopiBeans"><i class='bx bxl-github'></i></a>
@@ -210,10 +221,7 @@ I may still be building my experience, but I’m passionate about improving my s
                     <a href="https://www.facebook.com/john.v.saberdo/"><i class='bx bxl-facebook' ></i></a>
                 </div>
             </div>
-            <a href="mailto:john.v.saberdo@gmail.com" class="btn">Send Me An Email:<br>jpsaberdo@ccc.edu.ph
-            </a>
         </section>
-
         <!-- Footer: Copyright and back to top link -->
         <footer class="footer">
             <div class="footer-text">
@@ -229,24 +237,7 @@ I may still be building my experience, but I’m passionate about improving my s
 
         <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
         <script src="script.js"></script>
-        <script>
-            const scriptURL = 'https://script.google.com/macros/s/AKfycbzFPVGxI-75Ilkm2z_EMuI9ubPlp8-7dQmMzzdPiIunLPPzj3bcY1ohMdT_DfZ3zPwhTA/exec'
-            const form = document.forms['submit-to-google-sheet']
-            const msg=document.getElementById("msg")
-          
-            form.addEventListener('submit', e => {
-              e.preventDefault()
-              fetch(scriptURL, { method: 'POST', body: new FormData(form)})
-                .then(response => {
-                    msg.innerHTML="Message sent successfully"
-                    setTimeout(function(){
-                        msg.innerHTML=""
-                    },5000)
-                    form.reset()
-                })
-                .catch(error => console.error('Error!', error.message))
-            })
-          </script>
+
         
     </body>
 </html>
