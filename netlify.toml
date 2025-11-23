@@ -1,7 +1,6 @@
-from = "/*"
-  to = "/Portfolio.html"
-  status = 200
-
+[build]
+   command = ""
+   
   [[redirects]]
     from = "/*"
     publish = "."

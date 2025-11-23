@@ -585,6 +585,7 @@ section {
     color: #00abf0;
 }
 
+
 /* Responsive Design */
 @media (max-width: 1200px) {
     .home {
@@ -604,8 +605,8 @@ section {
     }
 
     .home-img img {
-        width: 300px;
-        height: 300px;
+        width: 300px !important;
+        height: 300px !important;
     }
 
     .about {
@@ -619,9 +620,22 @@ section {
     }
 }
 
+@media (min-width: 1200px) {
+    .home-img img {
+        width: 300px !important;
+        height: 300px !important;
+    }
+}
+
 @media (max-width: 768px) {
     .header {
-        padding: 15px 5%;
+        padding: 8px 4% !important;
+        padding-top: 20px !important;
+        padding-bottom: 10px !important;
+    }
+
+    .home-content {
+        margin-top: 50px !important;
     }
 
     .navbar {
@@ -642,12 +656,15 @@ section {
 
     .navbar a {
         display: block;
-        font-size: 2rem;
-        margin: 3rem 0;
+        font-size: 1.4rem !important;
+        margin: 12px 15px !important;
+        padding-top: 12px !important;
+        padding-bottom: 12px !important;
     }
 
     #menu-icon {
         display: block;
+        font-size: 28px !important;
     }
 
     section {
@@ -683,7 +700,7 @@ section {
     }
 
     .footer {
-        padding: 15px 5%;
+        padding: 25px 5% !important;
     }
 }
 
@@ -693,14 +710,18 @@ section {
     }
 
     .home-img img {
-        width: 250px;
-        height: 250px;
+        width: 200px !important;
+        height: 200px !important;
+        border-width: 3px !important;
+        box-shadow: 0 0 20px rgba(0, 171, 240, 0.4) !important;
+        margin: 0 auto;
+        display: block;
     }
 
     .about-img {
         width: 250px;
         height: 250px;
-        gap: 10px;
+        gap: 8px !important;
     }
 
     .about-img i {
@@ -711,6 +732,22 @@ section {
         padding: 30px 20px;
     }
 
+    .header {
+        padding: 6px 3% !important;
+        padding-top: 18px !important;
+        padding-bottom: 8px !important;
+    }
+
+    .navbar a {
+        font-size: 1.2rem !important;
+        margin: 10px !important;
+        padding-top: 10px !important;
+        padding-bottom: 10px !important;
+    }
+
+    #menu-icon {
+        font-size: 24px !important;
+    }
 }
 
 /* Animation Classes */
