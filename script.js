@@ -15,6 +15,30 @@ document.addEventListener('keydown', e => {
     if (e.key === 'Escape') setMenu(false);
 });
 
+// Light / dark mode switch (dark is the default; the choice is remembered)
+const themeToggle = document.querySelector('#theme-toggle');
+
+function applyTheme(theme) {
+    const light = theme === 'light';
+    if (light) {
+        document.documentElement.dataset.theme = 'light';
+    } else {
+        delete document.documentElement.dataset.theme;
+    }
+    themeToggle.innerHTML = light ? "<i class='bx bx-moon'></i>" : "<i class='bx bx-sun'></i>";
+    const label = light ? 'Switch to dark mode' : 'Switch to light mode';
+    themeToggle.setAttribute('aria-label', label);
+    themeToggle.title = label;
+}
+
+applyTheme(document.documentElement.dataset.theme === 'light' ? 'light' : 'dark');
+
+themeToggle.addEventListener('click', () => {
+    const next = document.documentElement.dataset.theme === 'light' ? 'dark' : 'light';
+    applyTheme(next);
+    try { localStorage.setItem('theme', next); } catch (e) {}
+});
+
 // Highlight the current section in the menu, sticky header, back-to-top button
 const sections = document.querySelectorAll('section');
 const navLinks = document.querySelectorAll('.navbar a');
@@ -50,8 +74,33 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 });
 
 // Typed.js: animates the profession text in the hero
+const roles = ['Graphic Designer', 'Front-End Developer', 'Visual Artist'];
+
+// Keep the headline at the height of its longest version, so it (and the photo
+// beside it on mobile) doesn't jump while the words are typed and deleted.
+const heroTitle = document.querySelector('.home-content h1');
+
+function lockHeroTitleHeight() {
+    heroTitle.style.minHeight = '';
+    let tallest = 0;
+    roles.forEach(role => {
+        const clone = heroTitle.cloneNode(true);
+        clone.querySelectorAll('.typed-cursor').forEach(c => c.remove());
+        clone.querySelector('.multiple-text').textContent = role;
+        clone.style.cssText = `position:absolute;visibility:hidden;width:${heroTitle.offsetWidth}px;min-height:0;`;
+        heroTitle.parentNode.appendChild(clone);
+        tallest = Math.max(tallest, clone.offsetHeight);
+        clone.remove();
+    });
+    heroTitle.style.minHeight = tallest + 'px';
+}
+
+lockHeroTitleHeight();
+window.addEventListener('resize', lockHeroTitleHeight);
+if (document.fonts) document.fonts.ready.then(lockHeroTitleHeight);
+
 const typed = new Typed('.multiple-text', {
-    strings: ['Graphic Designer', 'Front-End Developer', 'Visual Artist'],
+    strings: roles,
     typeSpeed: 100,
     backSpeed: 90,
     backDelay: 1000,
@@ -68,20 +117,67 @@ const sr = ScrollReveal({
 });
 
 sr.reveal('.home-content, .heading', { origin: 'top' });
-sr.reveal('.home-img, .portfolio-box, .contact form', { origin: 'bottom' });
+sr.reveal('.home-img, .portfolio-container, .contact form', { origin: 'bottom' });
 sr.reveal('.about-content, .contact-text', { origin: 'left' });
 sr.reveal('.about-tools, .testimonial-box', { origin: 'right' });
 
-// Portfolio hover lift (from the previous portfolio)
-document.querySelectorAll('.portfolio-box').forEach(box => {
-    box.style.transition = 'transform 0.5s ease';
-    box.addEventListener('mouseenter', () => {
-        box.style.transform = 'translateY(-10px) scale(1.02)';
+// Latest Projects: the row of cards follows the mouse sideways
+// (like Matteo Fabbiani's "Work - case studies"). Cards stay level; hovering one lifts it (CSS).
+(function () {
+    const strip = document.querySelector('.portfolio-container');
+    const track = document.querySelector('.work-track');
+    const desktop = window.matchMedia('(hover: hover) and (min-width: 861px)');
+    const SMOOTHING = 0.08; // lower = slower, smoother follow
+
+    let target = 0;   // 0 = start of the row (your websites), 1 = end of the row
+    let current = 0;
+    let range = 0;    // how far (px) the row can slide
+    let running = false;
+
+    function measure() {
+        range = Math.max(0, track.scrollWidth - strip.clientWidth);
+    }
+
+    function render() {
+        current += (target - current) * SMOOTHING;
+        track.style.transform = `translate3d(${-current * range}px, 0, 0)`;
+
+        if (Math.abs(target - current) > 0.0005) {
+            requestAnimationFrame(render);
+        } else {
+            running = false;
+        }
+    }
+
+    function start() {
+        if (!running) {
+            running = true;
+            requestAnimationFrame(render);
+        }
+    }
+
+    strip.addEventListener('mousemove', e => {
+        if (!desktop.matches) return;
+        const rect = strip.getBoundingClientRect();
+        // Ignore the outer 10% on each side so the ends are easy to reach
+        const ratio = (e.clientX - rect.left) / rect.width;
+        target = Math.min(1, Math.max(0, (ratio - 0.1) / 0.8));
+        start();
     });
-    box.addEventListener('mouseleave', () => {
-        box.style.transform = 'translateY(0) scale(1)';
-    });
-});
+
+    function reset() {
+        measure();
+        if (!desktop.matches) {
+            track.style.transform = '';
+        } else {
+            start();
+        }
+    }
+
+    window.addEventListener('resize', reset);
+    window.addEventListener('load', reset);
+    reset();
+})();
 
 // Keep name fields free of digits and other unsupported characters, including pasted text.
 const form = document.forms['contact'];
