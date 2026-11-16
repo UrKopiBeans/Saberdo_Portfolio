@@ -95,7 +95,7 @@ nameFields.forEach(field => {
 // Form submission handling: Web3Forms emails each message straight to your inbox (nothing is stored).
 // Get your free access key at https://web3forms.com (enter your email, the key is emailed to you)
 // and paste it below.
-const WEB3FORMS_ACCESS_KEY = 'PASTE-YOUR-ACCESS-KEY-HERE';
+const WEB3FORMS_ACCESS_KEY = 'eccaac7d-8872-4076-b536-b710a10b67dd';
 const msg = document.getElementById("msg");
 const submitBtn = form.querySelector('button[type="submit"]');
 
