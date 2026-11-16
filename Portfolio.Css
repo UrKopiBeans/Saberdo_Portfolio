@@ -1252,3 +1252,44 @@ body,
         transform: none;
     }
 }
+
+/* Mobile: centred Send button, footer links on one row, copyright on one line */
+@media (max-width: 600px) {
+    .contact form .btn {
+        align-self: center;
+    }
+
+    .footer-cta {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .footer-contact {
+        justify-content: center;
+    }
+
+    .footer-bottom {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1rem;
+    }
+
+    .footer-links {
+        flex-wrap: nowrap;
+        justify-content: space-between;
+        gap: 0.5rem;
+        width: 100%;
+    }
+
+    .footer-links a {
+        font-size: clamp(0.72rem, 3.4vw, 0.95rem);
+        white-space: nowrap;
+    }
+
+    .footer-text {
+        text-align: center;
+        white-space: nowrap;
+        font-size: clamp(0.6rem, 2.85vw, 0.85rem);
+    }
+}
