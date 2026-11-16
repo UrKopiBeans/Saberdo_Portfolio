@@ -68,6 +68,7 @@ a {
 
 section {
     padding: 120px 8%;
+    overflow-x: clip; /* slide-in animations must never make the page scroll sideways */
 }
 
 /* Shared text styles */
@@ -598,31 +599,31 @@ a.portfolio-box:hover .portfolio-info::after { transition-delay: 0.18s; }
     color: var(--gray);
 }
 
-/* Touch screens / small screens: swipeable row, text always visible at the bottom of each card */
+/* Touch screens / small screens: projects stack in a grid (no sideways scrolling), text always visible at the bottom of each card */
 @media (hover: none), (max-width: 860px) {
     .portfolio-container {
+        display: block;
         height: auto;
-        overflow-x: auto;
-        scroll-snap-type: x mandatory;
-        padding: 1rem 0 1.5rem;
-        scrollbar-width: none;
-    }
-
-    .portfolio-container::-webkit-scrollbar {
-        display: none;
+        overflow: visible;
+        padding: 0;
     }
 
     .work-track {
-        gap: 1rem;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.25rem;
         padding: 0 6%;
         transform: none !important;
     }
 
     .portfolio-box {
-        width: min(80vw, 22rem);
+        width: 100%;
         height: 20rem;
-        scroll-snap-align: center;
         transform: none !important;
+    }
+
+    .work-hint {
+        display: none;
     }
 
     .portfolio-img {
@@ -1109,8 +1110,47 @@ a.portfolio-box:hover .portfolio-info::after { transition-delay: 0.18s; }
         font-size: 1.75rem;
     }
 
+    /* Testimonials stay 2x2 on phones, with tighter cards so the text fits */
     .testimonials-container {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.75rem;
+    }
+
+    .testimonial-box {
+        padding: 1rem 0.85rem;
+    }
+
+    .quote-icon {
+        font-size: 1.5rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .testimonial-box p {
+        font-size: 0.8rem;
+        line-height: 1.5;
+        margin-bottom: 1rem;
+        hyphens: auto;
+    }
+
+    .testimonial-info {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .testimonial-info img {
+        width: 40px;
+        height: 40px;
+    }
+
+    .testimonial-info h4 {
+        font-size: 0.9rem;
+    }
+
+    .testimonial-info span {
+        font-size: 0.75rem;
+        line-height: 1.3;
+        display: block;
     }
 
     .contact form .input-box {
@@ -1192,5 +1232,12 @@ body,
     .portfolio-box:hover .portfolio-img img {
         filter: none;
         transform: none;
+    }
+}
+
+/* Phones: one project per row */
+@media (max-width: 600px) {
+    .work-track {
+        grid-template-columns: 1fr;
     }
 }
