@@ -152,13 +152,6 @@ section {
     color: var(--cream);
 }
 
-.btn-small {
-    padding: 0.5rem 1.2rem;
-    font-size: 0.85rem;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-}
-
 .btn-group {
     display: flex;
     flex-wrap: wrap;
@@ -623,15 +616,22 @@ a.portfolio-box:hover .portfolio-info::after { transition-delay: 0.18s; }
         transform: none !important;
     }
 
+    /* Card grows to fit all of its text: image on top, full title + description underneath */
     .portfolio-box {
         width: min(80vw, 22rem);
-        height: 20rem;
+        height: auto;
+        display: flex;
+        flex-direction: column;
         scroll-snap-align: center;
         transform: none !important;
     }
 
     .portfolio-img {
-        bottom: 7rem;
+        position: relative;
+        inset: auto;
+        height: 12.5rem;
+        flex-shrink: 0;
+        background: #fff;
     }
 
     .portfolio-img::after {
@@ -639,9 +639,11 @@ a.portfolio-box:hover .portfolio-info::after { transition-delay: 0.18s; }
     }
 
     .portfolio-info {
-        top: auto;
-        height: 7rem;
-        padding: 1rem 1.25rem;
+        position: relative;
+        inset: auto;
+        flex: 1;
+        justify-content: flex-start;
+        padding: 1rem 1.25rem 1.25rem;
         align-items: flex-start;
         text-align: left;
         background: var(--ink);
@@ -660,11 +662,8 @@ a.portfolio-box:hover .portfolio-info::after { transition-delay: 0.18s; }
 
     .portfolio-info p {
         font-size: 0.85rem;
+        line-height: 1.45;
         max-width: 100%;
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
     }
 
     a.portfolio-box .portfolio-info::after {
