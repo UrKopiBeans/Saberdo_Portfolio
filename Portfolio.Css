@@ -598,13 +598,13 @@ a.portfolio-box:hover .portfolio-info::after { transition-delay: 0.18s; }
     color: var(--gray);
 }
 
-/* Touch screens / small screens: swipeable row instead of the mouse-follow strip */
+/* Touch screens / small screens: swipeable row, text always visible at the bottom of each card */
 @media (hover: none), (max-width: 860px) {
     .portfolio-container {
         height: auto;
         overflow-x: auto;
         scroll-snap-type: x mandatory;
-        padding: 1.75rem 0 1.5rem; /* room for the hover lift */
+        padding: 1rem 0 1.5rem;
         scrollbar-width: none;
     }
 
@@ -622,21 +622,6 @@ a.portfolio-box:hover .portfolio-info::after { transition-delay: 0.18s; }
         width: min(80vw, 22rem);
         height: 20rem;
         scroll-snap-align: center;
-    }
-
-    .portfolio-info h4 {
-        font-size: 1.5rem;
-    }
-
-    .portfolio .section-head,
-    .work-hint {
-        padding: 0 6%;
-    }
-}
-
-/* Touch-only devices (phones/tablets): no hover exists, so show the text in a strip at the bottom */
-@media (hover: none) {
-    .portfolio-box {
         transform: none !important;
     }
 
@@ -657,7 +642,8 @@ a.portfolio-box:hover .portfolio-info::after { transition-delay: 0.18s; }
         background: var(--ink);
     }
 
-    .portfolio-info > * {
+    .portfolio-info > *,
+    a.portfolio-box .portfolio-info::after {
         transform: none;
         opacity: 1;
     }
@@ -678,6 +664,11 @@ a.portfolio-box:hover .portfolio-info::after { transition-delay: 0.18s; }
 
     a.portfolio-box .portfolio-info::after {
         display: none;
+    }
+
+    .portfolio .section-head,
+    .work-hint {
+        padding: 0 6%;
     }
 }
 
@@ -1189,4 +1180,17 @@ body,
 .testimonial-box p {
     text-align: justify;
     hyphens: auto;
+}
+
+/* Phones / tablets / narrow windows: no hover effects on project cards (no blur, no lift) */
+@media (hover: none), (max-width: 860px) {
+    .portfolio-box:hover {
+        background: #fff;
+        box-shadow: none;
+    }
+
+    .portfolio-box:hover .portfolio-img img {
+        filter: none;
+        transform: none;
+    }
 }
