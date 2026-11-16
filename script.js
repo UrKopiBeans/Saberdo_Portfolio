@@ -1,176 +1,164 @@
-// Toggle menu for mobile: Handles hamburger menu icon and navbar visibility
-let menuIcon = document.querySelector('#menu-icon');
-let navbar = document.querySelector('.navbar');
+// Full-screen menu toggle
+const menuIcon = document.querySelector('#menu-icon');
+const navbar = document.querySelector('.navbar');
 
-menuIcon.onclick = () => {
-    menuIcon.classList.toggle('bx-x');
-    navbar.classList.toggle('active');
-};
+function setMenu(open) {
+    menuIcon.classList.toggle('open', open);
+    navbar.classList.toggle('active', open);
+    document.body.classList.toggle('menu-open', open);
+    menuIcon.setAttribute('aria-expanded', open);
+    menuIcon.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+}
 
-// Scroll sections active link
-let sections = document.querySelectorAll('section');
-let navLinks = document.querySelectorAll('header nav a');
+menuIcon.addEventListener('click', () => setMenu(!navbar.classList.contains('active')));
+document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') setMenu(false);
+});
 
-window.onscroll = () => {
+// Highlight the current section in the menu, sticky header, back-to-top button
+const sections = document.querySelectorAll('section');
+const navLinks = document.querySelectorAll('.navbar a');
+const header = document.querySelector('.header');
+const backToTopBtn = document.querySelector('.footer-iconTop');
+
+window.addEventListener('scroll', () => {
+    const top = window.scrollY;
+
     sections.forEach(sec => {
-        let top = window.scrollY;
-        let offset = sec.offsetTop - 150;
-        let height = sec.offsetHeight;
-        let id = sec.getAttribute('id');
-
-        if (top >= offset && top < offset + height) {
-            navLinks.forEach(links => {
-                links.classList.remove('active');
-                document.querySelector('header nav a[href*=' + id + ']').classList.add('active');
+        const offset = sec.offsetTop - 150;
+        const id = sec.getAttribute('id');
+        if (top >= offset && top < offset + sec.offsetHeight) {
+            navLinks.forEach(link => {
+                link.classList.toggle('active', link.getAttribute('href') === '#' + id);
             });
         }
     });
 
-    // Sticky navbar
-    let header = document.querySelector('.header');
-    header.classList.toggle('sticky', window.scrollY > 100);
+    header.classList.toggle('sticky', top > 50);
+    backToTopBtn.style.display = top > 300 ? 'block' : 'none';
+});
 
-    // Remove toggle icon and navbar when click navbar link (scroll)
-    menuIcon.classList.remove('bx-x');
-    navbar.classList.remove('active');
-};
+// Smooth scrolling for anchor links (also closes the menu)
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        const target = document.querySelector(this.getAttribute('href'));
+        if (!target) return;
+        e.preventDefault();
+        setMenu(false);
+        target.scrollIntoView({ behavior: 'smooth' });
+    });
+});
 
-// Typed.js for multiple text animation: Animates the title text with multiple strings
+// Typed.js: animates the profession text in the hero
 const typed = new Typed('.multiple-text', {
-    strings: ['Graphic Designer', 'Visual Artist'],
+    strings: ['Graphic Designer', 'Front-End Developer', 'Visual Artist'],
     typeSpeed: 100,
     backSpeed: 90,
     backDelay: 1000,
     loop: true
 });
 
-/* This initializes the Typed.js library to create a typing animation effect on the profession text in the home section */
-
-// Scroll Reveal Animation
-ScrollReveal({
+// Scroll Reveal: soft fade-up animations
+// Same settings as the previous portfolio: big 80px slides that replay every time a section scrolls into view
+const sr = ScrollReveal({
     reset: true,
     distance: '80px',
     duration: 2000,
     delay: 200
 });
 
-ScrollReveal().reveal('.home-content, .heading', { origin: 'top' });
-ScrollReveal().reveal('.home-img, .services-container, .portfolio-box, .contact form', { origin: 'bottom' });
-ScrollReveal().reveal('.about-img, .about-content', { origin: 'left' });
-ScrollReveal().reveal('.services-box', { origin: 'right' });
+sr.reveal('.home-content, .heading', { origin: 'top' });
+sr.reveal('.home-img, .portfolio-box, .contact form', { origin: 'bottom' });
+sr.reveal('.about-content, .contact-text', { origin: 'left' });
+sr.reveal('.about-tools, .testimonial-box', { origin: 'right' });
 
-// Form submission handling: Sends form data to Google Sheets and shows success message
-const scriptURL = 'https://script.google.com/macros/s/AKfycbzFPVGxI-75Ilkm2z_EMuI9ubPlp8-7dQmMzzdPiIunLPPzj3bcY1ohMdT_DfZ3zPwhTA/exec';
-const form = document.forms['submit-to-google-sheet'];
-const msg = document.getElementById("msg");
-
-form.addEventListener('submit', e => {
-    e.preventDefault();
-    fetch(scriptURL, { method: 'POST', body: new FormData(form) })
-        .then(response => {
-            msg.innerHTML = "Message sent successfully";
-            setTimeout(function() {
-                msg.innerHTML = "";
-            }, 5000);
-            form.reset();
-        })
-        .catch(error => console.error('Error!', error.message));
-});
-
-// Smooth scrolling for anchor links
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        document.querySelector(this.getAttribute('href')).scrollIntoView({
-            behavior: 'smooth'
-        });
-    });
-});
-
-// Portfolio hover effect enhancement
-const portfolioBoxes = document.querySelectorAll('.portfolio-box');
-
-portfolioBoxes.forEach(box => {
+// Portfolio hover lift (from the previous portfolio)
+document.querySelectorAll('.portfolio-box').forEach(box => {
+    box.style.transition = 'transform 0.5s ease';
     box.addEventListener('mouseenter', () => {
         box.style.transform = 'translateY(-10px) scale(1.02)';
     });
-
     box.addEventListener('mouseleave', () => {
         box.style.transform = 'translateY(0) scale(1)';
     });
 });
 
-// Service box hover effect
-const serviceBoxes = document.querySelectorAll('.services-box');
-
-serviceBoxes.forEach(box => {
-    box.addEventListener('mouseenter', () => {
-        box.style.transform = 'translateY(-10px)';
-    });
-
-    box.addEventListener('mouseleave', () => {
-        box.style.transform = 'translateY(0)';
+// Keep name fields free of digits and other unsupported characters, including pasted text.
+const form = document.forms['contact'];
+const nameFields = form.querySelectorAll('input[name="Surname"], input[name="First Name"]');
+nameFields.forEach(field => {
+    field.addEventListener('input', () => {
+        field.value = field.value.replace(/[^\p{L}\p{M}' -]/gu, '');
     });
 });
 
-// Back to top button functionality
-const backToTopBtn = document.querySelector('.footer-iconTop');
+// Form submission handling: Web3Forms emails each message straight to your inbox (nothing is stored).
+// Get your free access key at https://web3forms.com (enter your email, the key is emailed to you)
+// and paste it below.
+const WEB3FORMS_ACCESS_KEY = 'PASTE-YOUR-ACCESS-KEY-HERE';
+const msg = document.getElementById("msg");
+const submitBtn = form.querySelector('button[type="submit"]');
 
-window.addEventListener('scroll', () => {
-    if (window.pageYOffset > 300) {
-        backToTopBtn.style.display = 'flex';
-    } else {
-        backToTopBtn.style.display = 'none';
-    }
-});
-
-// Preloader (if needed)
-window.addEventListener('load', () => {
-    const preloader = document.querySelector('.preloader');
-    if (preloader) {
-        preloader.style.display = 'none';
-    }
-});
-
-// Lazy loading for images
-const images = document.querySelectorAll('img[data-src]');
-
-const imageObserver = new IntersectionObserver((entries, observer) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            const img = entry.target;
-            img.src = img.dataset.src;
-            img.classList.remove('lazy');
-            observer.unobserve(img);
-        }
-    });
-});
-
-images.forEach(img => imageObserver.observe(img));
-
-// Dark mode toggle (optional feature)
-const themeToggle = document.querySelector('.theme-toggle');
-
-if (themeToggle) {
-    themeToggle.addEventListener('click', () => {
-        document.body.classList.toggle('dark-theme');
-        localStorage.setItem('theme', document.body.classList.contains('dark-theme') ? 'dark' : 'light');
-    });
-
-    // Load saved theme
-    if (localStorage.getItem('theme') === 'dark') {
-        document.body.classList.add('dark-theme');
-    }
+function showMsg(text) {
+    msg.textContent = text;
+    setTimeout(() => { msg.textContent = ""; }, 6000);
 }
+
+form.addEventListener('submit', e => {
+    e.preventDefault();
+    if (!validateForm()) return;
+
+    const firstName = form['First Name'].value.trim();
+    const surname = form['Surname'].value.trim();
+    const email = form['Email Address'].value.trim();
+
+    const payload = {
+        access_key: WEB3FORMS_ACCESS_KEY,
+        subject: `New portfolio message from ${firstName} ${surname}`,
+        from_name: 'Saberdo Portfolio',
+        replyto: email, // hitting "Reply" in your inbox answers the visitor directly
+        botcheck: form['botcheck'].checked,
+        'First Name': firstName,
+        'Surname': surname,
+        'Email Address': email,
+        'Message': form['Your Message'].value.trim()
+    };
+
+    submitBtn.disabled = true;
+
+    fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify(payload)
+    })
+        .then(response => response.json())
+        .then(result => {
+            if (!result.success) throw new Error(result.message || 'Unknown error');
+            showMsg("Message sent successfully! I'll get back to you soon.");
+            form.reset();
+        })
+        .catch(error => {
+            console.error('Error!', error.message);
+            showMsg("Sorry, your message couldn't be sent. Please email me directly at jpsaberdo@ccc.edu.ph.");
+        })
+        .finally(() => { submitBtn.disabled = false; });
+});
 
 // Contact form validation
 function validateForm() {
-    const name = document.forms["submit-to-google-sheet"]["Name"].value;
-    const email = document.forms["submit-to-google-sheet"]["Email Address"].value;
-    const message = document.forms["submit-to-google-sheet"]["Your Message"].value;
+    const surname = form["Surname"].value.trim();
+    const firstName = form["First Name"].value.trim();
+    const email = form["Email Address"].value.trim();
+    const message = form["Your Message"].value.trim();
 
-    if (name == "" || email == "" || message == "") {
+    if (surname === "" || firstName === "" || email === "" || message === "") {
         alert("All fields must be filled out");
+        return false;
+    }
+
+    const nameRegex = /^[\p{L}\p{M}' -]+$/u;
+    if (!nameRegex.test(surname) || !nameRegex.test(firstName)) {
+        alert("Please use letters only for your surname and first name");
         return false;
     }
 
@@ -182,10 +170,3 @@ function validateForm() {
 
     return true;
 }
-
-// Add form validation to submit event
-form.addEventListener('submit', (e) => {
-    if (!validateForm()) {
-        e.preventDefault();
-    }
-});

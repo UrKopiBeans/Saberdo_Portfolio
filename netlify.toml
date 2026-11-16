@@ -1,8 +1,0 @@
-[build]
-   command = ""
-   
-  [[redirects]]
-    from = "/*"
-    publish = "."
-    to = "/Portfolio.html"
-    status = 200
