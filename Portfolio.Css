@@ -879,12 +879,6 @@ a.portfolio-box:hover .portfolio-info::after { transition-delay: 0.18s; }
     max-width: 700px;
 }
 
-.footer .btn-solid:hover {
-    background: #fff;
-    border-color: #fff;
-    color: #0b0b0c;
-}
-
 .footer-contact {
     display: flex;
     flex-wrap: wrap;
@@ -1291,5 +1285,21 @@ body,
         text-align: center;
         white-space: nowrap;
         font-size: clamp(0.6rem, 2.85vw, 0.85rem);
+    }
+}
+
+/* Hero intro paragraph justified (all screen sizes) */
+.home-intro {
+    text-align: justify;
+    hyphens: auto;
+}
+
+/* Mobile: hero label line centred and kept on one line */
+@media (max-width: 600px) {
+    .home-content .eyebrow {
+        justify-self: center;
+        white-space: nowrap;
+        font-size: clamp(0.58rem, 2.6vw, 0.85rem);
+        letter-spacing: 0.08em;
     }
 }
