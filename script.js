@@ -238,20 +238,28 @@ form.addEventListener('submit', e => {
     e.preventDefault();
     if (!validateForm()) return;
 
-    const firstName = form['First Name'].value.trim();
-    const surname = form['Surname'].value.trim();
+    // Tidy names: "JOHN VINCENT" / "john vincent" -> "John Vincent"
+    const titleCase = s => s.toLowerCase().replace(/(^|[\s'-])(\p{L})/gu, (m, sep, ch) => sep + ch.toUpperCase());
+    const firstName = titleCase(form['First Name'].value.trim());
+    const surname = titleCase(form['Surname'].value.trim());
+    const fullName = `${firstName} ${surname}`;
     const email = form['Email Address'].value.trim();
+    const sentAt = new Date().toLocaleString('en-PH', {
+        timeZone: 'Asia/Manila', dateStyle: 'long', timeStyle: 'short'
+    });
 
+    // The fields below appear in this order in the email you receive
     const payload = {
         access_key: WEB3FORMS_ACCESS_KEY,
-        subject: `New portfolio message from ${firstName} ${surname}`,
-        from_name: 'Saberdo Portfolio',
+        subject: `📩 New message from ${fullName} — via your portfolio`,
+        from_name: "John Vincent's Portfolio",
         replyto: email, // hitting "Reply" in your inbox answers the visitor directly
         botcheck: form['botcheck'].checked,
-        'First Name': firstName,
-        'Surname': surname,
-        'Email Address': email,
-        'Message': form['Your Message'].value.trim()
+        'From': fullName,
+        'Email': email,
+        'Message': form['Your Message'].value.trim(),
+        'Sent': `${sentAt} (Philippine time)`,
+        'How to reply': `Just hit "Reply" — it goes straight to ${firstName} at ${email}.`
     };
 
     submitBtn.disabled = true;
