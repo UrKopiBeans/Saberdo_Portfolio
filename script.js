@@ -179,6 +179,40 @@ sr.reveal('.about-tools, .testimonial-box', { origin: 'right' });
     reset();
 })();
 
+// Mobile / narrow screens: swap a project to its second picture when it scrolls (or is swiped)
+// into view, or when it's touched. It swaps back when the card leaves the screen.
+(function () {
+    const small = window.matchMedia('(hover: none), (max-width: 860px)');
+    const cards = document.querySelectorAll('.portfolio-box.has-hover-img');
+    if (!cards.length || !('IntersectionObserver' in window)) return;
+
+    const timers = new WeakMap();
+
+    const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+            const card = entry.target;
+            clearTimeout(timers.get(card));
+            if (!small.matches) {
+                card.classList.remove('show-alt');
+                return;
+            }
+            if (entry.intersectionRatio >= 0.75) {
+                // Short pause so visitors see the first picture before it changes
+                timers.set(card, setTimeout(() => card.classList.add('show-alt'), 700));
+            } else {
+                card.classList.remove('show-alt');
+            }
+        });
+    }, { threshold: [0, 0.75] });
+
+    cards.forEach(card => {
+        observer.observe(card);
+        card.addEventListener('touchstart', () => {
+            if (small.matches) card.classList.add('show-alt');
+        }, { passive: true });
+    });
+})();
+
 // Keep name fields free of digits and other unsupported characters, including pasted text.
 const form = document.forms['contact'];
 const nameFields = form.querySelectorAll('input[name="Surname"], input[name="First Name"]');

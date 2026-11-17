@@ -1425,3 +1425,22 @@ body,
     background: #fff;
     padding: 4px;
 }
+
+/* Mobile / narrow screens: the second picture fades in when a project scrolls into view, is touched, or hovered */
+@media (hover: none), (max-width: 860px) {
+    .has-hover-img .portfolio-img img {
+        transition: opacity 0.6s ease, transform 0.9s var(--ease);
+    }
+
+    .has-hover-img.show-alt .portfolio-img .img-main,
+    .has-hover-img:hover .portfolio-img .img-main {
+        opacity: 0;
+    }
+
+    .has-hover-img.show-alt .portfolio-img .img-hover,
+    .has-hover-img:hover .portfolio-img .img-hover {
+        opacity: 1;
+        filter: none;
+        transform: scale(1.03);
+    }
+}
