@@ -198,7 +198,7 @@ sr.reveal('.about-tools, .testimonial-box', { origin: 'right' });
             }
             if (entry.intersectionRatio >= 0.75) {
                 // Short pause so visitors see the first picture before it changes
-                timers.set(card, setTimeout(() => card.classList.add('show-alt'), 700));
+                timers.set(card, setTimeout(() => card.classList.add('show-alt'), 300));
             } else {
                 card.classList.remove('show-alt');
             }
