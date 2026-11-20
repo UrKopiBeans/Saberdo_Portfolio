@@ -39,11 +39,10 @@ themeToggle.addEventListener('click', () => {
     try { localStorage.setItem('theme', next); } catch (e) {}
 });
 
-// Highlight the current section in the menu, sticky header, back-to-top button
+// Highlight the current section in the menu and keep the header visible
 const sections = document.querySelectorAll('section');
 const navLinks = document.querySelectorAll('.navbar a');
 const header = document.querySelector('.header');
-const backToTopBtn = document.querySelector('.footer-iconTop');
 
 window.addEventListener('scroll', () => {
     const top = window.scrollY;
@@ -59,7 +58,6 @@ window.addEventListener('scroll', () => {
     });
 
     header.classList.toggle('sticky', top > 50);
-    backToTopBtn.style.display = top > 300 ? 'block' : 'none';
 });
 
 // Smooth scrolling for anchor links (also closes the menu)
