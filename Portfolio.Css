@@ -160,13 +160,14 @@ section {
 
 .quick-nav {
     position: fixed;
-    top: 22px;
+    top: auto;
+    bottom: calc(24px + env(safe-area-inset-bottom));
     left: 50%;
     z-index: 149;
     transform: translateX(-50%);
     display: inline-flex;
     align-items: center;
-    padding: 0.45rem;
+    padding: 0.3rem;
     border: 1px solid var(--line);
     border-radius: 999px;
     background: var(--cream-2);
@@ -175,13 +176,13 @@ section {
 
 .quick-nav a {
     position: relative;
-    width: 48px;
-    height: 44px;
+    width: 42px;
+    height: 38px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     color: var(--black);
-    font-size: 1.35rem;
+    font-size: 1.15rem;
     text-decoration: none;
     transition: color 0.25s ease, background 0.25s ease;
 }
@@ -1121,6 +1122,21 @@ a.portfolio-box:hover .portfolio-info::after { transition-delay: 0.18s; }
     .header.sticky {
         padding-top: 10px;
         padding-bottom: 10px;
+    }
+
+    .quick-nav {
+        bottom: calc(12px + env(safe-area-inset-bottom));
+        padding: 0.22rem;
+    }
+
+    .quick-nav a {
+        width: 36px;
+        height: 34px;
+        font-size: 1rem;
+    }
+
+    .quick-nav a + a::before {
+        height: 18px;
     }
 
     .logo-text,
